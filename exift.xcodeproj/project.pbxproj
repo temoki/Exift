@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		14D5CCC91BE650540046A937 /* ExifIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D5CCC81BE650540046A937 /* ExifIO.swift */; };
+		14D5CCC91BE650540046A937 /* ExifDateTimeIO.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14D5CCC81BE650540046A937 /* ExifDateTimeIO.swift */; };
 		14DC29821BE5AB1F005FF5AA /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DC29811BE5AB1F005FF5AA /* AppDelegate.swift */; };
 		14DC29841BE5AB1F005FF5AA /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14DC29831BE5AB1F005FF5AA /* ViewController.swift */; };
 		14DC29861BE5AB1F005FF5AA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 14DC29851BE5AB1F005FF5AA /* Assets.xcassets */; };
@@ -35,7 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		14D5CCC81BE650540046A937 /* ExifIO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = ExifIO.swift; path = ../../Exift/exift/ExifIO.swift; sourceTree = "<group>"; };
+		14D5CCC81BE650540046A937 /* ExifDateTimeIO.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExifDateTimeIO.swift; sourceTree = "<group>"; };
 		14DC297E1BE5AB1F005FF5AA /* exift.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = exift.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		14DC29811BE5AB1F005FF5AA /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		14DC29831BE5AB1F005FF5AA /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -101,7 +101,7 @@
 			children = (
 				14DC29811BE5AB1F005FF5AA /* AppDelegate.swift */,
 				14DC29831BE5AB1F005FF5AA /* ViewController.swift */,
-				14D5CCC81BE650540046A937 /* ExifIO.swift */,
+				14D5CCC81BE650540046A937 /* ExifDateTimeIO.swift */,
 				14DC29AE1BE5AEEC005FF5AA /* FileDragAndDropView.swift */,
 				14DC29851BE5AB1F005FF5AA /* Assets.xcassets */,
 				14DC29871BE5AB1F005FF5AA /* Main.storyboard */,
@@ -261,7 +261,7 @@
 				14DC29841BE5AB1F005FF5AA /* ViewController.swift in Sources */,
 				14DC29AF1BE5AEEC005FF5AA /* FileDragAndDropView.swift in Sources */,
 				14DC29821BE5AB1F005FF5AA /* AppDelegate.swift in Sources */,
-				14D5CCC91BE650540046A937 /* ExifIO.swift in Sources */,
+				14D5CCC91BE650540046A937 /* ExifDateTimeIO.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

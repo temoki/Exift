@@ -96,26 +96,31 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
     // MARK: - Action
     
     @IBAction func applyButtonAction(sender: NSButton) {
-        NSLog("applyButtonAction")
+        saveExifData()
     }
     
     
     // MARK: - Private
     
-    func reloadExifData() {
+    private func reloadExifData() {
         for var i = 0; i < tableRowDataArray.count; i++ {
-            guard let exifDict = ExifIO.readImageExif(tableRowDataArray[i].filePath) else {
-                continue
-            }
-            
-            if let dateTimeOriginal = exifDict[kCGImagePropertyExifDateTimeOriginal as String] as? String {
-                tableRowDataArray[i].dateTimeOriginal = dateTimeOriginal
-            }
-            
-            if let dateTimeDigitized = exifDict[kCGImagePropertyExifDateTimeDigitized as String] as? String {
-                tableRowDataArray[i].dateTimeDigitized = dateTimeDigitized
+            if let exifDateTime = ExifDateTimeIO.readImageExifDateTime(tableRowDataArray[i].filePath) {
+                tableRowDataArray[i].dateTimeOriginal = exifDateTime.0
+                tableRowDataArray[i].dateTimeDigitized = exifDateTime.1
             }
         }
+    }
+    
+    private func saveExifData() {
+        let formatter = NSDateFormatter()
+        formatter.locale = dateTimePicker.locale
+        formatter.dateFormat = "yyyy:MM:dd hh:mm:ss"
+        let dateTime = formatter.stringFromDate(dateTimePicker.dateValue)
+        for rowIndex in tableView.selectedRowIndexes {
+            ExifDateTimeIO.writeImageExifDateTime(tableRowDataArray[rowIndex].filePath,
+                dateTimeOriginal: dateTime, dateTimeDigitized: dateTime)
+        }
+        reloadExifData()
     }
 
 }
