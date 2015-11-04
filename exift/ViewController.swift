@@ -12,12 +12,10 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
     @IBOutlet private var fileDandDView: FileDragAndDropView!
     @IBOutlet private var tableView: NSTableView!
     
-    struct TableRowData {
-        var filePath = ""
-        var dateTimeOriginal = ""
-        var dateTimeDigitized = ""
-    }
-    private var tableRowDataArray = [TableRowData]()
+    private let kFilePath = "FilePath"
+    private let kDateTimeOriginal = "DateTimeOriginal"
+    private let kDateTimeDigitized = "DateTimeDigitized"
+    private var tableRowDataArray = NSMutableArray() // NSMutableArray<NSMutableDictionary<String, String>>
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,22 +36,16 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
     }
     
     func tableView(tableView: NSTableView, objectValueForTableColumn tableColumn: NSTableColumn?, row: Int) -> AnyObject? {
-        guard let tableColumn = tableColumn else {
-            return nil
+        if let tableColumn = tableColumn {
+            return tableRowDataArray.objectAtIndex(row).objectForKey(tableColumn.identifier)
         }
+        return nil
 
-        let tableRowData = tableRowDataArray[row]
-        
-        switch tableColumn.identifier {
-        case "FilePath":
-            return tableRowData.filePath
-        case "DateTimeOriginal":
-            return tableRowData.dateTimeOriginal
-        case "DateTimeDigitized":
-            return tableRowData.dateTimeDigitized
-        default:
-            return nil
-        }
+    }
+    
+    func tableView(tableView: NSTableView, sortDescriptorsDidChange oldDescriptors: [NSSortDescriptor]) {
+        tableRowDataArray.sortUsingDescriptors(tableView.sortDescriptors)
+        tableView.reloadData()
     }
     
     
@@ -67,7 +59,8 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
     // MARK: - FileDragAndDropViewDelegate
     
     func filesDropped(filePaths: [String]) {
-        tableRowDataArray.removeAll()
+        tableView.deselectAll(self)
+        tableRowDataArray.removeAllObjects()
         
         let fileManager = NSFileManager.defaultManager()
         for filePath in filePaths {
@@ -83,13 +76,14 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
                 continue
             }
             
-            var tableRowData = TableRowData()
-            tableRowData.filePath = filePath
-            tableRowDataArray.append(tableRowData)
+            let tableRowData = NSMutableDictionary()
+            tableRowData.setObject(filePath, forKey: kFilePath)
+            tableRowData.setObject("", forKey: kDateTimeOriginal)
+            tableRowData.setObject("", forKey: kDateTimeDigitized)
+            tableRowDataArray.addObject(tableRowData)
         }
         
-        self.reloadExifData()
-        self.tableView.reloadData()
+        reloadExifData()
     }
     
     
@@ -103,21 +97,38 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
     // MARK: - Private
     
     private func reloadExifData() {
-        for var i = 0; i < tableRowDataArray.count; i++ {
-            if let exifDateTime = ExifDateTimeIO.readImageExifDateTime(tableRowDataArray[i].filePath) {
-                tableRowDataArray[i].dateTimeOriginal = exifDateTime.0
-                tableRowDataArray[i].dateTimeDigitized = exifDateTime.1
+        for tableRowData in tableRowDataArray {
+            tableRowData.setObject("", forKey: kDateTimeOriginal)
+            tableRowData.setObject("", forKey: kDateTimeDigitized)
+            
+            guard let filePath = tableRowData.objectForKey(kFilePath) as? String else {
+                continue
             }
+            
+            guard let exifDateTime = ExifDateTimeIO.readImageExifDateTime(filePath) else {
+                continue
+            }
+            
+            tableRowData.setObject(exifDateTime.0, forKey: kDateTimeOriginal)
+            tableRowData.setObject(exifDateTime.1, forKey: kDateTimeDigitized)
         }
+        tableView.reloadData()
     }
     
     private func saveExifData() {
         let formatter = NSDateFormatter()
         formatter.locale = dateTimePicker.locale
-        formatter.dateFormat = "yyyy:MM:dd hh:mm:ss"
+        formatter.dateFormat = "yyyy:MM:dd HH:mm:ss"
         let dateTime = formatter.stringFromDate(dateTimePicker.dateValue)
         for rowIndex in tableView.selectedRowIndexes {
-            ExifDateTimeIO.writeImageExifDateTime(tableRowDataArray[rowIndex].filePath,
+            guard let tableRowData = tableRowDataArray.objectAtIndex(rowIndex) as? NSDictionary else {
+                continue
+            }
+            
+            guard let filePath = tableRowData.objectForKey(kFilePath) as? String else {
+                continue
+            }
+            ExifDateTimeIO.writeImageExifDateTime(filePath,
                 dateTimeOriginal: dateTime, dateTimeDigitized: dateTime)
         }
         reloadExifData()
