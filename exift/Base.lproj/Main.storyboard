@@ -673,20 +673,24 @@
                         <rect key="frame" x="0.0" y="0.0" width="480" height="200"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xtg-2h-4Sw">
-                                <rect key="frame" x="18" y="167" width="124" height="17"/>
+                            <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xIk-jx-v4O">
+                                <rect key="frame" x="20" y="161" width="123" height="26"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="120" id="1QU-Xq-0bw"/>
+                                    <constraint firstAttribute="width" constant="120" id="u8e-sp-XCL"/>
                                 </constraints>
                                 <animations/>
-                                <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" sendsActionOnEndEditing="YES" title="New date and time" id="Aq0-fz-sdW">
+                                <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" numberOfVisibleItems="2" id="8aV-CN-NMl">
                                     <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="controlColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    <objectValues>
+                                        <string>New date time</string>
+                                        <string>Offset time</string>
+                                    </objectValues>
+                                </comboBoxCell>
+                            </comboBox>
                             <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="WYN-g9-Uz9">
-                                <rect key="frame" x="156" y="164" width="168" height="27"/>
+                                <rect key="frame" x="148" y="164" width="168" height="27"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="165" id="GPa-ec-QFu"/>
                                 </constraints>
@@ -801,7 +805,7 @@
                                 <animations/>
                             </customView>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aU4-iU-rgs">
-                                <rect key="frame" x="335" y="158" width="104" height="32"/>
+                                <rect key="frame" x="315" y="158" width="104" height="32"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="92" id="MOi-XR-okh"/>
                                 </constraints>
@@ -816,20 +820,21 @@
                             </button>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="aU4-iU-rgs" firstAttribute="leading" secondItem="WYN-g9-Uz9" secondAttribute="trailing" constant="20" id="0Pr-4d-3Td"/>
-                            <constraint firstItem="xtg-2h-4Sw" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="16" id="1N1-30-rSD"/>
-                            <constraint firstItem="WYN-g9-Uz9" firstAttribute="leading" secondItem="xtg-2h-4Sw" secondAttribute="trailing" constant="16" id="6gT-Ho-Rl5"/>
-                            <constraint firstItem="WYN-g9-Uz9" firstAttribute="top" secondItem="xtg-2h-4Sw" secondAttribute="bottom" constant="-20" id="QOP-hY-lOZ"/>
+                            <constraint firstItem="aU4-iU-rgs" firstAttribute="leading" secondItem="WYN-g9-Uz9" secondAttribute="trailing" constant="8" id="0Pr-4d-3Td"/>
+                            <constraint firstItem="xIk-jx-v4O" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="4kz-28-gkQ"/>
+                            <constraint firstItem="WYN-g9-Uz9" firstAttribute="centerY" secondItem="xIk-jx-v4O" secondAttribute="centerY" id="GsR-AH-AH9"/>
                             <constraint firstItem="FdV-At-tUH" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="Upv-B3-faz"/>
                             <constraint firstAttribute="trailing" secondItem="FdV-At-tUH" secondAttribute="trailing" id="Us4-27-LOQ"/>
                             <constraint firstItem="FdV-At-tUH" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="50" id="XZ5-Ib-pJb"/>
                             <constraint firstAttribute="bottom" secondItem="FdV-At-tUH" secondAttribute="bottom" id="amn-Lx-zGc"/>
-                            <constraint firstItem="xtg-2h-4Sw" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="lVT-DI-t2S"/>
+                            <constraint firstItem="xIk-jx-v4O" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="15" id="g51-6h-WBz"/>
                             <constraint firstItem="aU4-iU-rgs" firstAttribute="top" secondItem="WYN-g9-Uz9" secondAttribute="bottom" constant="-22" id="r1l-8b-glR"/>
+                            <constraint firstItem="WYN-g9-Uz9" firstAttribute="leading" secondItem="xIk-jx-v4O" secondAttribute="trailing" constant="8" id="w1G-I5-Nuu"/>
                         </constraints>
                         <animations/>
                     </view>
                     <connections>
+                        <outlet property="actionComboBox" destination="xIk-jx-v4O" id="gfM-Lx-r9Q"/>
                         <outlet property="applyButton" destination="aU4-iU-rgs" id="InH-5p-kla"/>
                         <outlet property="dateTimePicker" destination="WYN-g9-Uz9" id="DHp-os-f9k"/>
                         <outlet property="fileDandDView" destination="FdV-At-tUH" id="plV-Xb-2tt"/>
