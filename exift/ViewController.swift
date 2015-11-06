@@ -150,6 +150,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
     
     private func saveExifDataWithDateTime() {
         let formatter = NSDateFormatter()
+        formatter.timeZone = dateTimePicker.timeZone
         formatter.locale = dateTimePicker.locale
         formatter.dateFormat = "yyyy:MM:dd HH:mm:ss"
         let dateTimeStr = formatter.stringFromDate(dateTimePicker.dateValue)
@@ -170,6 +171,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
     private func saveExifDataWithOffset() {
         let offset = dateTimePicker.dateValue.timeIntervalSince1970
         let formatter = NSDateFormatter()
+        formatter.timeZone = dateTimePicker.timeZone
         formatter.locale = dateTimePicker.locale
         formatter.dateFormat = "yyyy:MM:dd HH:mm:ss"
         for rowIndex in tableView.selectedRowIndexes {
