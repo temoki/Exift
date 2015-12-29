@@ -7,7 +7,7 @@ import Cocoa
 
 class ExifDateTimeIO {
     
-    class func readImageExifDateTime(filePath: String) -> (String, String)? {
+    class func readImageExifDateTime(filePath: String) -> String? {
         let fileURL = NSURL(fileURLWithPath: filePath)
         
         guard let source = CGImageSourceCreateWithURL(fileURL as CFURLRef, nil) else {
@@ -22,18 +22,10 @@ class ExifDateTimeIO {
             return nil
         }
         
-        var dateTimePair = ("", "")
-        if let dateTimeOriginal = exifDictionary.objectForKey(kCGImagePropertyExifDateTimeOriginal) as? String {
-            dateTimePair.0 = dateTimeOriginal
-        }
-        if let dateTimeDigitized = exifDictionary.objectForKey(kCGImagePropertyExifDateTimeDigitized) as? String {
-            dateTimePair.1 = dateTimeDigitized
-        }
-        
-        return dateTimePair
+        return exifDictionary.objectForKey(kCGImagePropertyExifDateTimeOriginal) as? String
     }
     
-    class func writeImageExifDateTime(filePath:String, dateTimeOriginal: String, dateTimeDigitized: String) -> Bool {
+    class func writeImageExifDateTime(filePath:String, dateStr: String?, timeStr: String?) -> Bool {
         let fileURL = NSURL(fileURLWithPath: filePath)
         
         guard let source = CGImageSourceCreateWithURL(fileURL as CFURLRef, nil) else {
@@ -48,8 +40,22 @@ class ExifDateTimeIO {
             return false
         }
         
-        exifDictionary.setValue(dateTimeOriginal, forKey: kCGImagePropertyExifDateTimeOriginal as String)
-        exifDictionary.setValue(dateTimeDigitized, forKey: kCGImagePropertyExifDateTimeDigitized as String)
+        guard let dateTimeStr = exifDictionary.objectForKey(kCGImagePropertyExifDateTimeOriginal) as? String else {
+            return false
+        }
+        
+        let dateTimeStrArray = dateTimeStr.componentsSeparatedByString(" ")
+        guard dateTimeStrArray.count == 2 else {
+            return false
+        }
+        let orgDateStr = dateTimeStrArray[0]
+        let orgTimeStr = dateTimeStrArray[1]
+        
+        var dstDateTimeStr = dateStr ?? orgDateStr
+        dstDateTimeStr += " "
+        dstDateTimeStr += timeStr ?? orgTimeStr
+        exifDictionary.setValue(dstDateTimeStr, forKey: kCGImagePropertyExifDateTimeOriginal as String)
+        exifDictionary.setValue(dstDateTimeStr, forKey: kCGImagePropertyExifDateTimeDigitized as String)
         
         guard let sourceType = CGImageSourceGetType(source) else {
             return false

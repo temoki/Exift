@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="9059" systemVersion="15B42" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15C50" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9059"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="9531"/>
     </dependencies>
     <scenes>
         <!--Application-->
@@ -673,28 +673,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="480" height="200"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
-                            <comboBox verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="xIk-jx-v4O">
-                                <rect key="frame" x="20" y="161" width="123" height="26"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="120" id="u8e-sp-XCL"/>
-                                </constraints>
-                                <animations/>
-                                <comboBoxCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" completes="NO" numberOfVisibleItems="2" id="8aV-CN-NMl">
+                            <button translatesAutoresizingMaskIntoConstraints="NO" id="kc3-yk-Wfp">
+                                <rect key="frame" x="18" y="166" width="51" height="18"/>
+                                <buttonCell key="cell" type="check" title="Date" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="UsR-LK-FP6">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
                                     <font key="font" metaFont="system"/>
-                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                    <objectValues>
-                                        <string>New date time</string>
-                                        <string>Offset time</string>
-                                    </objectValues>
-                                </comboBoxCell>
-                            </comboBox>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="dateCheckAction:" target="XfG-lQ-9wD" id="idu-a8-eLz"/>
+                                </connections>
+                            </button>
                             <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="WYN-g9-Uz9">
-                                <rect key="frame" x="148" y="164" width="168" height="27"/>
+                                <rect key="frame" x="77" y="164" width="103" height="27"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="165" id="GPa-ec-QFu"/>
+                                    <constraint firstAttribute="width" constant="100" id="GPa-ec-QFu"/>
                                 </constraints>
-                                <animations/>
                                 <datePickerCell key="cell" borderStyle="bezel" alignment="left" id="xrd-5Z-tRi">
                                     <font key="font" metaFont="system"/>
                                     <date key="date" timeIntervalSinceReferenceDate="-978307200">
@@ -705,9 +698,52 @@
                                     </date>
                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                    <datePickerElements key="datePickerElements" year="YES" month="YES" day="YES" hour="YES" minute="YES" second="YES"/>
                                 </datePickerCell>
                             </datePicker>
+                            <button translatesAutoresizingMaskIntoConstraints="NO" id="VwS-Mw-Fky">
+                                <rect key="frame" x="185" y="166" width="54" height="18"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="50" id="o3I-T7-JfI"/>
+                                </constraints>
+                                <buttonCell key="cell" type="check" title="Time" bezelStyle="regularSquare" imagePosition="left" state="on" inset="2" id="Ytv-aH-SKw">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="timeCheckAction:" target="XfG-lQ-9wD" id="EDa-Z7-yfg"/>
+                                </connections>
+                            </button>
+                            <datePicker verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="reh-xC-hMi">
+                                <rect key="frame" x="247" y="164" width="83" height="27"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="80" id="D65-Bi-vEH"/>
+                                </constraints>
+                                <datePickerCell key="cell" borderStyle="bezel" alignment="left" id="IEi-a6-3Pl">
+                                    <font key="font" metaFont="system"/>
+                                    <date key="date" timeIntervalSinceReferenceDate="-978307200">
+                                        <!--1970-01-01 00:00:00 +0000-->
+                                    </date>
+                                    <date key="minDate" timeIntervalSinceReferenceDate="-978307200">
+                                        <!--1970-01-01 00:00:00 +0000-->
+                                    </date>
+                                    <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                    <datePickerElements key="datePickerElements" hour="YES" minute="YES" second="YES"/>
+                                </datePickerCell>
+                            </datePicker>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aU4-iU-rgs">
+                                <rect key="frame" x="354" y="158" width="112" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="100" id="MOi-XR-okh"/>
+                                </constraints>
+                                <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="nQh-9M-fzp">
+                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                                <connections>
+                                    <action selector="applyButtonAction:" target="XfG-lQ-9wD" id="bDC-Ne-LzJ"/>
+                                </connections>
+                            </button>
                             <customView translatesAutoresizingMaskIntoConstraints="NO" id="FdV-At-tUH" customClass="FileDragAndDropView" customModule="exift" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="0.0" width="480" height="150"/>
                                 <subviews>
@@ -718,15 +754,14 @@
                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <subviews>
                                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="firstColumnOnly" alternatingRowBackgroundColors="YES" autosaveColumns="NO" typeSelect="NO" headerView="5mV-Cj-eQX" id="O9p-Ww-Sdk">
-                                                    <rect key="frame" x="0.0" y="0.0" width="509" height="126"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="478" height="126"/>
                                                     <autoresizingMask key="autoresizingMask"/>
-                                                    <animations/>
                                                     <size key="intercellSpacing" width="3" height="2"/>
                                                     <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                                     <tableViewGridLines key="gridStyleMask" vertical="YES" dashed="YES"/>
                                                     <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                                     <tableColumns>
-                                                        <tableColumn identifier="FilePath" editable="NO" width="200" minWidth="50" maxWidth="1000" id="aAq-c6-Cxb">
+                                                        <tableColumn identifier="FilePath" editable="NO" width="304.48828125" minWidth="50" maxWidth="1000" id="aAq-c6-Cxb">
                                                             <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="File Path">
                                                                 <font key="font" metaFont="smallSystem"/>
                                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
@@ -741,7 +776,7 @@
                                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                         </tableColumn>
                                                         <tableColumn identifier="DateTimeOriginal" width="150" minWidth="50" maxWidth="150" id="OgI-iX-wS6">
-                                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Date Time (Original)">
+                                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Date Time">
                                                                 <font key="font" metaFont="smallSystem"/>
                                                                 <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                                 <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
@@ -754,20 +789,6 @@
                                                             <sortDescriptor key="sortDescriptorPrototype" selector="compare:" sortKey="DateTimeOriginal"/>
                                                             <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                         </tableColumn>
-                                                        <tableColumn identifier="DateTimeDigitized" width="150" minWidth="50" maxWidth="150" id="gkn-1m-31L">
-                                                            <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border" title="Date Time (Digitized)">
-                                                                <font key="font" metaFont="smallSystem"/>
-                                                                <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
-                                                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
-                                                            </tableHeaderCell>
-                                                            <textFieldCell key="dataCell" lineBreakMode="truncatingTail" selectable="YES" editable="YES" alignment="left" title="Text Cell" id="RXo-WN-Gf7">
-                                                                <font key="font" metaFont="system"/>
-                                                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
-                                                                <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                                            </textFieldCell>
-                                                            <sortDescriptor key="sortDescriptorPrototype" selector="compare:" sortKey="DateTimeDigitized"/>
-                                                            <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
-                                                        </tableColumn>
                                                     </tableColumns>
                                                     <connections>
                                                         <outlet property="dataSource" destination="XfG-lQ-9wD" id="dJY-3W-rEI"/>
@@ -775,24 +796,19 @@
                                                     </connections>
                                                 </tableView>
                                             </subviews>
-                                            <animations/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                         </clipView>
-                                        <animations/>
-                                        <scroller key="horizontalScroller" verticalHuggingPriority="750" horizontal="YES" id="7xh-ag-tbh">
+                                        <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="7xh-ag-tbh">
                                             <rect key="frame" x="1" y="133" width="478" height="16"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <animations/>
                                         </scroller>
                                         <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="KvU-Kj-bvX">
                                             <rect key="frame" x="224" y="17" width="15" height="102"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <animations/>
                                         </scroller>
                                         <tableHeaderView key="headerView" id="5mV-Cj-eQX">
-                                            <rect key="frame" x="0.0" y="0.0" width="509" height="23"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="478" height="23"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <animations/>
                                         </tableHeaderView>
                                     </scrollView>
                                 </subviews>
@@ -802,43 +818,33 @@
                                     <constraint firstItem="CjM-OR-OmR" firstAttribute="top" secondItem="FdV-At-tUH" secondAttribute="top" id="r40-cp-I5q"/>
                                     <constraint firstAttribute="bottom" secondItem="CjM-OR-OmR" secondAttribute="bottom" id="sQ3-0s-F7b"/>
                                 </constraints>
-                                <animations/>
                             </customView>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="aU4-iU-rgs">
-                                <rect key="frame" x="315" y="158" width="104" height="32"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="92" id="MOi-XR-okh"/>
-                                </constraints>
-                                <animations/>
-                                <buttonCell key="cell" type="push" title="Apply" bezelStyle="rounded" alignment="center" enabled="NO" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="nQh-9M-fzp">
-                                    <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                                <connections>
-                                    <action selector="applyButtonAction:" target="XfG-lQ-9wD" id="bDC-Ne-LzJ"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="aU4-iU-rgs" firstAttribute="leading" secondItem="WYN-g9-Uz9" secondAttribute="trailing" constant="8" id="0Pr-4d-3Td"/>
-                            <constraint firstItem="xIk-jx-v4O" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="4kz-28-gkQ"/>
-                            <constraint firstItem="WYN-g9-Uz9" firstAttribute="centerY" secondItem="xIk-jx-v4O" secondAttribute="centerY" id="GsR-AH-AH9"/>
+                            <constraint firstItem="WYN-g9-Uz9" firstAttribute="centerY" secondItem="kc3-yk-Wfp" secondAttribute="centerY" id="Gfa-Sq-Soe"/>
+                            <constraint firstItem="WYN-g9-Uz9" firstAttribute="leading" secondItem="kc3-yk-Wfp" secondAttribute="trailing" constant="10" id="Ldu-t0-WRk"/>
                             <constraint firstItem="FdV-At-tUH" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" id="Upv-B3-faz"/>
                             <constraint firstAttribute="trailing" secondItem="FdV-At-tUH" secondAttribute="trailing" id="Us4-27-LOQ"/>
+                            <constraint firstItem="reh-xC-hMi" firstAttribute="centerY" secondItem="VwS-Mw-Fky" secondAttribute="centerY" id="W0M-Fz-o0R"/>
                             <constraint firstItem="FdV-At-tUH" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="50" id="XZ5-Ib-pJb"/>
                             <constraint firstAttribute="bottom" secondItem="FdV-At-tUH" secondAttribute="bottom" id="amn-Lx-zGc"/>
-                            <constraint firstItem="xIk-jx-v4O" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="15" id="g51-6h-WBz"/>
-                            <constraint firstItem="aU4-iU-rgs" firstAttribute="top" secondItem="WYN-g9-Uz9" secondAttribute="bottom" constant="-22" id="r1l-8b-glR"/>
-                            <constraint firstItem="WYN-g9-Uz9" firstAttribute="leading" secondItem="xIk-jx-v4O" secondAttribute="trailing" constant="8" id="w1G-I5-Nuu"/>
+                            <constraint firstItem="VwS-Mw-Fky" firstAttribute="leading" secondItem="WYN-g9-Uz9" secondAttribute="trailing" constant="10" id="cfk-oJ-OU8"/>
+                            <constraint firstAttribute="trailing" secondItem="aU4-iU-rgs" secondAttribute="trailing" constant="20" id="dMP-uK-fYe"/>
+                            <constraint firstItem="kc3-yk-Wfp" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="18" id="eeH-BA-nwf"/>
+                            <constraint firstItem="VwS-Mw-Fky" firstAttribute="centerY" secondItem="WYN-g9-Uz9" secondAttribute="centerY" id="foU-pq-pb1"/>
+                            <constraint firstItem="aU4-iU-rgs" firstAttribute="centerY" secondItem="kc3-yk-Wfp" secondAttribute="centerY" id="mlm-sV-x4Z"/>
+                            <constraint firstItem="reh-xC-hMi" firstAttribute="leading" secondItem="VwS-Mw-Fky" secondAttribute="trailing" constant="10" id="pyf-z5-a9U"/>
+                            <constraint firstItem="kc3-yk-Wfp" firstAttribute="leading" secondItem="m2S-Jp-Qdl" secondAttribute="leading" constant="20" id="sht-mv-o5f"/>
                         </constraints>
-                        <animations/>
                     </view>
                     <connections>
-                        <outlet property="actionComboBox" destination="xIk-jx-v4O" id="gfM-Lx-r9Q"/>
                         <outlet property="applyButton" destination="aU4-iU-rgs" id="InH-5p-kla"/>
-                        <outlet property="dateTimePicker" destination="WYN-g9-Uz9" id="DHp-os-f9k"/>
+                        <outlet property="dateCheck" destination="kc3-yk-Wfp" id="bc8-ow-m0n"/>
+                        <outlet property="datePicker" destination="WYN-g9-Uz9" id="0iE-uf-f9X"/>
                         <outlet property="fileDandDView" destination="FdV-At-tUH" id="plV-Xb-2tt"/>
                         <outlet property="tableView" destination="O9p-Ww-Sdk" id="mJx-Bm-5En"/>
+                        <outlet property="timeCheck" destination="VwS-Mw-Fky" id="TJK-08-dFp"/>
+                        <outlet property="timePicker" destination="reh-xC-hMi" id="SWY-sA-w1c"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
