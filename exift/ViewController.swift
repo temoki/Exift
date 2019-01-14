@@ -15,18 +15,18 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
     @IBOutlet private var fileDandDView: FileDragAndDropView!
     @IBOutlet private var tableView: NSTableView!
     
-    private let kFilePath = "FilePath"
-    private let kDateTimeOriginal = "DateTimeOriginal"
-    private var tableRowDataArray = NSMutableArray() // NSMutableArray<NSMutableDictionary<String, String>>
+    private let kFilePath: NSString = "FilePath"
+    private let kDateTimeOriginal: NSString = "DateTimeOriginal"
+    private var tableRowDataArray = NSMutableArray() // NSMutableArray<NSMutableDictionary<NSUserInterfaceItemIdentifier, String>>
 
     override func viewDidLoad() {
         super.viewDidLoad()
         fileDandDView.delegate = self
-        datePicker.timeZone = NSTimeZone(forSecondsFromGMT: 0)
-        timePicker.timeZone = NSTimeZone(forSecondsFromGMT: 0)
+        datePicker.timeZone = TimeZone(secondsFromGMT: 0)
+        timePicker.timeZone = TimeZone(secondsFromGMT: 0)
     }
 
-    override var representedObject: AnyObject? {
+    override var representedObject: Any? {
         didSet {
         // Update the view, if already loaded.
         }
@@ -35,47 +35,47 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
     
     // MARK: - NSTableViewDataSource
 
-    func numberOfRowsInTableView(tableView: NSTableView) -> Int {
+    func numberOfRows(in tableView: NSTableView) -> Int {
         return tableRowDataArray.count
     }
     
-    func tableView(tableView: NSTableView, objectValueForTableColumn tableColumn: NSTableColumn?, row: Int) -> AnyObject? {
+    func tableView(_ tableView: NSTableView, objectValueFor tableColumn: NSTableColumn?, row: Int) -> Any? {
         if let tableColumn = tableColumn {
-            return tableRowDataArray.objectAtIndex(row).objectForKey(tableColumn.identifier)
+            return (tableRowDataArray.object(at: row) as? NSDictionary)?.object(forKey: tableColumn.identifier)
         }
         return nil
 
     }
     
-    func tableView(tableView: NSTableView, sortDescriptorsDidChange oldDescriptors: [NSSortDescriptor]) {
-        tableRowDataArray.sortUsingDescriptors(tableView.sortDescriptors)
+    func tableView(_ tableView: NSTableView, sortDescriptorsDidChange oldDescriptors: [NSSortDescriptor]) {
+        tableRowDataArray.sort(using: tableView.sortDescriptors)
         tableView.reloadData()
     }
     
     
     // MARK: NSTableViewDelegate
     
-    func tableViewSelectionDidChange(notification: NSNotification) {
-        applyButton.enabled = tableView.selectedRowIndexes.count > 0
+    func tableViewSelectionDidChange(_ notification: Notification) {
+        applyButton.isEnabled = tableView.selectedRowIndexes.count > 0
     }
     
     
     // MARK: - FileDragAndDropViewDelegate
     
-    func filesDropped(filePaths: [String]) {
+    func filesDropped(_ filePaths: [String]) {
         tableView.deselectAll(self)
         tableRowDataArray.removeAllObjects()
         
-        let fileManager = NSFileManager.defaultManager()
+        let fileManager = FileManager.default
         for filePath in filePaths {
             
             var isDirectory = ObjCBool(true)
-            let fileExists = fileManager.fileExistsAtPath(filePath, isDirectory: &isDirectory)
+            let fileExists = fileManager.fileExists(atPath: filePath, isDirectory: &isDirectory)
             if !fileExists || isDirectory.boolValue {
                 continue
             }
             
-            let ext = (filePath as NSString).pathExtension.lowercaseString
+            let ext = (filePath as NSString).pathExtension.lowercased()
             if !(ext == "jpg" || ext == "jpeg" || ext == "tif" || ext == "tiff") {
                 continue
             }
@@ -83,7 +83,7 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
             let tableRowData = NSMutableDictionary()
             tableRowData.setObject(filePath, forKey: kFilePath)
             tableRowData.setObject("", forKey: kDateTimeOriginal)
-            tableRowDataArray.addObject(tableRowData)
+            tableRowDataArray.add(tableRowData)
         }
         
         reloadExifData()
@@ -92,25 +92,29 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
     
     // MARK: - Action
     
-    @IBAction func applyButtonAction(sender: NSButton) {
+    @IBAction func applyButtonAction(_ sender: NSButton) {
         saveExifDataWithDateTime()
+        //saveExifDataWithOffset()
     }
     
-    @IBAction func dateCheckAction(sender: NSButton) {
-        self.datePicker.enabled = (sender.state == NSOnState)
+    @IBAction func dateCheckAction(_ sender: NSButton) {
+        self.datePicker.isEnabled = (sender.state == .on)
     }
     
-    @IBAction func timeCheckAction(sender: NSButton) {
-        self.timePicker.enabled = (sender.state == NSOnState)
+    @IBAction func timeCheckAction(_ sender: NSButton) {
+        self.timePicker.isEnabled = (sender.state == .on)
     }
     
     // MARK: - Private
     
     private func reloadExifData() {
         for tableRowData in tableRowDataArray {
+            guard let tableRowData = tableRowData as? NSMutableDictionary else {
+                continue
+            }
             tableRowData.setObject("", forKey: kDateTimeOriginal)
             
-            guard let filePath = tableRowData.objectForKey(kFilePath) as? String else {
+            guard let filePath = tableRowData.object(forKey: kFilePath) as? String else {
                 continue
             }
             
@@ -125,29 +129,29 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
     
     private func saveExifDataWithDateTime() {
         var dateStr: String? = nil
-        if dateCheck.state == NSOnState {
-            let dateFormatter = NSDateFormatter()
+        if dateCheck.state == .on {
+            let dateFormatter = DateFormatter()
             dateFormatter.timeZone = datePicker.timeZone
             dateFormatter.locale = datePicker.locale
             dateFormatter.dateFormat = "yyyy:MM:dd"
-            dateStr = dateFormatter.stringFromDate(datePicker.dateValue)
+            dateStr = dateFormatter.string(from: datePicker.dateValue)
         }
         
         var timeStr: String? = nil
-        if timeCheck.state == NSOnState {
-            let timeFormatter = NSDateFormatter()
+        if timeCheck.state == .on {
+            let timeFormatter = DateFormatter()
             timeFormatter.timeZone = timePicker.timeZone
             timeFormatter.locale = timePicker.locale
             timeFormatter.dateFormat = "HH:mm:ss"
-            timeStr = timeFormatter.stringFromDate(timePicker.dateValue)
+            timeStr = timeFormatter.string(from: timePicker.dateValue)
         }
         
         for rowIndex in tableView.selectedRowIndexes {
-            guard let tableRowData = tableRowDataArray.objectAtIndex(rowIndex) as? NSDictionary else {
+            guard let tableRowData = tableRowDataArray.object(at: rowIndex) as? NSDictionary else {
                 continue
             }
             
-            guard let filePath = tableRowData.objectForKey(kFilePath) as? String else {
+            guard let filePath = tableRowData.object(forKey: kFilePath) as? String else {
                 continue
             }
             ExifDateTimeIO.writeImageExifDateTime(filePath, dateStr: dateStr, timeStr: timeStr)
@@ -155,36 +159,48 @@ class ViewController: NSViewController, NSTableViewDataSource, NSTableViewDelega
         reloadExifData()
     }
     
-    /*
+    // TODO: 中途半端
     private func saveExifDataWithOffset() {
-        let offset = dateTimePicker.dateValue.timeIntervalSince1970
-        let formatter = NSDateFormatter()
-        formatter.timeZone = dateTimePicker.timeZone
-        formatter.locale = dateTimePicker.locale
-        formatter.dateFormat = "yyyy:MM:dd HH:mm:ss"
+        let offset = timePicker.dateValue.timeIntervalSince1970
+
+        let dateTimeFormatter = DateFormatter()
+        dateTimeFormatter.timeZone = timePicker.timeZone
+        dateTimeFormatter.locale = timePicker.locale
+        dateTimeFormatter.dateFormat = "yyyy:MM:dd HH:mm:ss"
+
+        let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = timePicker.timeZone
+        dateFormatter.locale = timePicker.locale
+        dateFormatter.dateFormat = "yyyy:MM:dd"
+
+        let timeFormatter = DateFormatter()
+        timeFormatter.timeZone = timePicker.timeZone
+        timeFormatter.locale = timePicker.locale
+        timeFormatter.dateFormat = "HH:mm:ss"
+
         for rowIndex in tableView.selectedRowIndexes {
-            guard let tableRowData = tableRowDataArray.objectAtIndex(rowIndex) as? NSDictionary else {
+            guard let tableRowData = tableRowDataArray.object(at: rowIndex) as? NSDictionary else {
                 continue
             }
             
-            guard let dateTimeStr = tableRowData.objectForKey(kDateTimeOriginal) as? String else {
+            guard let dateTimeStr = tableRowData.object(forKey: kDateTimeOriginal) as? String else {
                 continue
             }
             
-            guard let dateTime = formatter.dateFromString(dateTimeStr) else {
+            guard let dateTime = dateTimeFormatter.date(from: dateTimeStr) else {
                 continue
             }
-            let newDateTime = dateTime.dateByAddingTimeInterval(offset)
-            let newDateTimeStr = formatter.stringFromDate(newDateTime)
-            
-            guard let filePath = tableRowData.objectForKey(kFilePath) as? String else {
+            let newDateTime = dateTime.addingTimeInterval(offset)
+            let newDateStr = dateFormatter.string(from: newDateTime)
+            let newTimeStr = timeFormatter.string(from: newDateTime)
+
+            guard let filePath = tableRowData.object(forKey: kFilePath) as? String else {
                 continue
             }
-            ExifDateTimeIO.writeImageExifDateTime(filePath,
-                dateTimeOriginal: newDateTimeStr, dateTimeDigitized: newDateTimeStr)
+            ExifDateTimeIO.writeImageExifDateTime(filePath, dateStr: newDateStr, timeStr: newTimeStr)
         }
         reloadExifData()
-    }*/
+    }
 
 }
 

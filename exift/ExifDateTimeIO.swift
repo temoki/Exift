@@ -7,10 +7,10 @@ import Cocoa
 
 class ExifDateTimeIO {
     
-    class func readImageExifDateTime(filePath: String) -> String? {
+    class func readImageExifDateTime(_ filePath: String) -> String? {
         let fileURL = NSURL(fileURLWithPath: filePath)
         
-        guard let source = CGImageSourceCreateWithURL(fileURL as CFURLRef, nil) else {
+        guard let source = CGImageSourceCreateWithURL(fileURL as CFURL, nil) else {
             return nil
         }
         
@@ -18,17 +18,18 @@ class ExifDateTimeIO {
             return nil
         }
         
-        guard let exifDictionary = properties.objectForKey(kCGImagePropertyExifDictionary) as? NSDictionary else {
+        guard let exifDictionary = properties.object(forKey: kCGImagePropertyExifDictionary) as? NSDictionary else {
             return nil
         }
         
-        return exifDictionary.objectForKey(kCGImagePropertyExifDateTimeOriginal) as? String
+        return exifDictionary.object(forKey: kCGImagePropertyExifDateTimeOriginal) as? String
     }
     
-    class func writeImageExifDateTime(filePath:String, dateStr: String?, timeStr: String?) -> Bool {
+    @discardableResult
+    class func writeImageExifDateTime(_ filePath: String, dateStr: String?, timeStr: String?) -> Bool {
         let fileURL = NSURL(fileURLWithPath: filePath)
         
-        guard let source = CGImageSourceCreateWithURL(fileURL as CFURLRef, nil) else {
+        guard let source = CGImageSourceCreateWithURL(fileURL as CFURL, nil) else {
             return false
         }
         
@@ -36,15 +37,15 @@ class ExifDateTimeIO {
             return false
         }
         
-        guard let exifDictionary = properties.objectForKey(kCGImagePropertyExifDictionary) as? NSDictionary else {
+        guard let exifDictionary = properties.object(forKey: kCGImagePropertyExifDictionary) as? NSDictionary else {
             return false
         }
         
-        guard let dateTimeStr = exifDictionary.objectForKey(kCGImagePropertyExifDateTimeOriginal) as? String else {
+        guard let dateTimeStr = exifDictionary.object(forKey: kCGImagePropertyExifDateTimeOriginal) as? String else {
             return false
         }
         
-        let dateTimeStrArray = dateTimeStr.componentsSeparatedByString(" ")
+        let dateTimeStrArray = dateTimeStr.components(separatedBy: " ")
         guard dateTimeStrArray.count == 2 else {
             return false
         }
@@ -68,7 +69,7 @@ class ExifDateTimeIO {
 
         CGImageDestinationAddImageFromSource(destination, source, 0, exifDictionary)
         CGImageDestinationFinalize(destination)
-        return imageData.writeToFile(filePath, atomically: true)
+        return imageData.write(toFile: filePath, atomically: true)
     }
 
 }

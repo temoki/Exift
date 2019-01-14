@@ -6,7 +6,7 @@
 import Cocoa
 
 protocol FileDragAndDropViewDelegate: class {
-    func filesDropped(filePaths: [String])
+    func filesDropped(_ filePaths: [String])
 }
 
 class FileDragAndDropView: NSView {
@@ -15,26 +15,32 @@ class FileDragAndDropView: NSView {
 
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.registerForDraggedTypes([NSFilenamesPboardType])
+        self.registerForDraggedTypes([pasteBoardType])
     }
     
-    override func drawRect(dirtyRect: NSRect) {
-        super.drawRect(dirtyRect)
+    override func draw(_ dirtyRect: NSRect) {
+        super.draw(dirtyRect)
     }
     
     
     // MARK: - NSDraggingDestination Protocol
     
-    override func draggingEntered(sender: NSDraggingInfo) -> NSDragOperation {
-        return NSDragOperation.Copy
+    override func draggingEntered(_ sender: NSDraggingInfo) -> NSDragOperation {
+        return NSDragOperation.copy
     }
     
-    override func performDragOperation(sender: NSDraggingInfo) -> Bool {
-        let pasteBoard = sender.draggingPasteboard()
-        if let filePaths = pasteBoard.propertyListForType(NSFilenamesPboardType) as? [String] {
+    override func performDragOperation(_ sender: NSDraggingInfo) -> Bool {
+        let pasteBoard = sender.draggingPasteboard
+        if let filePaths = pasteBoard.propertyList(forType: pasteBoardType) as? [String] {
             delegate?.filesDropped(filePaths)
         }
         return true
     }
     
+    // MARK: - Private
+    
+    //private let pasteBoardType = NSPasteboard.PasteboardType.fileURL
+    //↑これだと動作しないのでワークアラウンド
+    private let pasteBoardType = NSPasteboard.PasteboardType(rawValue: "NSFilenamesPboardType")
+
 }
